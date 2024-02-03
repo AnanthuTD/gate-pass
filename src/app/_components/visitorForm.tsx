@@ -28,11 +28,12 @@ const VisitorForm: React.FC = () => {
 	const [currentDate, setCurrentDate] = useState<dayjs.Dayjs>(dayjs.tz());
 	const [ticketInfo, setTicketInfo] = useState<TicketInfo | null>(null);
 
-	const componentRef = useRef<HTMLDivElement | null>(null);
-
 	const reactToPrintContent = React.useCallback(() => {
 		return componentRef.current;
-	}, [componentRef.current]);
+	}, []);
+
+	const componentRef: React.MutableRefObject<HTMLDivElement | null> =
+		useRef(null);
 
 	const handlePrint = useReactToPrint({
 		content: reactToPrintContent,
