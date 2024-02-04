@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import VisitorForm from "./_components/visitorForm";
+import VisitorForm from "./components/visitorForm";
 import { ConfigProvider, theme } from "antd";
 
 const { darkAlgorithm } = theme;
