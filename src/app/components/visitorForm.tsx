@@ -7,8 +7,6 @@ const VisitorForm: React.FC = () => {
 	const [form] = Form.useForm();
 	const [ticketInfo, setTicketInfo] = useState<VisitorTicket | null>(null);
 
-	
-
 	const handleSubmit = async (values: any) => {
 		try {
 			console.log("Form values:", values);
