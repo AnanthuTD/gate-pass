@@ -41,7 +41,7 @@ const QRScanner = ({ data, setData }) => {
         <QrScanner
           onScan={handleScan}
           onError={handleError}
-          facingMode={facingMode}
+          facingMode={"rear"}
           style={{ width: '100%', height: 'auto', borderRadius: '8px' , transform:'scaleX(-1)'}}
           delay={500}
           onLoad={() => setLoading(false)} // Set loading to false on successful load
