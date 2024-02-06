@@ -1,18 +1,22 @@
+'use client'
 import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import { Spin, Button, message } from 'antd';
+import { Spin, Button, message, Select } from 'antd';
 import { CameraOutlined } from '@ant-design/icons';
 
 const QrScanner = dynamic(() => import('react-qr-scanner'), {
   ssr: false,
 });
 
+const { Option } = Select;
+
 const QRScanner = ({ data, setData }) => {
-  const [facingMode, setFacingMode] = useState('rear');
   const [loading, setLoading] = useState(false);
+  const [devices, setDevices] = useState([]);
+  const [selectedDevice, setSelectedDevice] = useState(null);
 
   const handleScan = (result) => {
-	console.log(result);
+    console.log(result);
     if (result) {
       setData(result.text);
     }
@@ -24,16 +28,28 @@ const QRScanner = ({ data, setData }) => {
   };
 
   const toggleCamera = () => {
-    setFacingMode((prevFacingMode) => (prevFacingMode === 'rear' ? 'front' : 'rear'));
-  };
-
-  const reloadScanner = () => {
-    setData(null); // Clear existing data
+    setSelectedDevice(null); // Reset selected device when toggling camera
   };
 
   useEffect(() => {
-    message.destroy();
-  }, [data]);
+    const enumerateDevices = async () => {
+      try {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const videoDevices = devices.filter((device) => device.kind === 'videoinput');
+        setDevices(videoDevices);
+        if (videoDevices.length > 0) {
+          setSelectedDevice(videoDevices[0].deviceId);
+        }
+      } catch (error) {
+        console.error('Error enumerating devices:', error);
+      }
+    };
+    enumerateDevices();
+  }, []);
+
+  const handleDeviceChange = (deviceId) => {
+    setSelectedDevice(deviceId);
+  };
 
   return (
     <div className="w-full max-w-md text-center">
@@ -41,10 +57,19 @@ const QRScanner = ({ data, setData }) => {
         <QrScanner
           onScan={handleScan}
           onError={handleError}
-          facingMode={"rear"}
-          style={{ width: '100%', height: 'auto', borderRadius: '8px' , transform:'scaleX(-1)'}}
+          facingMode={selectedDevice ? { exact: selectedDevice } : 'environment'}
+          style={{ width: '100%', height: 'auto', borderRadius: '8px', transform: 'scaleX(-1)' }}
           delay={500}
           onLoad={() => setLoading(false)} // Set loading to false on successful load
+          chooseDeviceId={(videoDevices, allDevices) => {
+            if (videoDevices.length > 0) {
+              return videoDevices[0].deviceId;
+            } else if (allDevices.length > 0) {
+              return allDevices[0].deviceId;
+            } else {
+              return null;
+            }
+          }}
         />
       </Spin>
 
@@ -65,6 +90,13 @@ const QRScanner = ({ data, setData }) => {
         >
           Switch Camera
         </Button>
+        <Select value={selectedDevice} onChange={handleDeviceChange} style={{ width: 200 }}>
+          {devices.map((device) => (
+            <Option key={device.deviceId} value={device.deviceId}>
+              {device.label || `Camera ${devices.indexOf(device) + 1}`}
+            </Option>
+          ))}
+        </Select>
       </div>
     </div>
   );
