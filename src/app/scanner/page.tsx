@@ -1,8 +1,18 @@
 // Home component
 "use client";
 import { useEffect, useState } from "react";
-import { Row, Col, Spin, Button, ConfigProvider, theme, Card } from "antd"; // Import Row and Col for responsive layout
+import {
+	Row,
+	Col,
+	Spin,
+	Button,
+	ConfigProvider,
+	theme,
+	Card,
+	message,
+} from "antd"; // Import Row and Col for responsive layout
 import QRScanner from "./QRScanner";
+import NewQRScanner from "./newQRScanner";
 import VisitorDetails from "./visitorDetails";
 import { motion } from "framer-motion";
 
@@ -65,8 +75,7 @@ const Home: React.FC = () => {
 						style={{
 							transformStyle: "preserve-3d",
 							backfaceVisibility: "hidden",
-						}}
-						>
+						}}>
 						<motion.div
 							animate={{ rotateX: flip ? 180 : 0 }}
 							transition={{ duration: 0.5 }}
@@ -75,7 +84,10 @@ const Home: React.FC = () => {
 								backfaceVisibility: "hidden",
 							}}>
 							{showQR ? (
-								<QRScanner data={data} setData={setData} />
+								// <QRScanner data={data} setData={setData} />
+								<NewQRScanner
+									onDataFound={(value) => message.info(value)}
+								/>
 							) : visitor ? (
 								<VisitorDetails visitor={visitor} />
 							) : null}
