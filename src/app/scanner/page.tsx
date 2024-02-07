@@ -1,20 +1,10 @@
 // Home component
 "use client";
 import { useEffect, useState } from "react";
-import {
-	Row,
-	Col,
-	Spin,
-	Button,
-	ConfigProvider,
-	theme,
-	Card,
-	message,
-} from "antd"; // Import Row and Col for responsive layout
-import QRScanner from "./QRScanner";
-import NewQRScanner from "./newQRScanner";
-import VisitorDetails from "./visitorDetails";
-import { motion } from "framer-motion";
+import { Row, Col, Spin, Button, Card } from "antd"; // Import Row and Col for responsive layout
+import QRScanner from "./components/QRScanner";
+import VisitorDetails from "./components/visitorDetails";
+import { QrcodeOutlined, CloseCircleOutlined } from "@ant-design/icons";
 
 const dummyVisitor: VisitorTicket = {
 	name: "John Doe",
@@ -68,45 +58,30 @@ const Home: React.FC = () => {
 	};
 
 	return (
-		<ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
-			<Row gutter={[16, 16]} justify="center" align="middle">
-				<Col xs={24} sm={12} md={12} lg={12}>
-					<Card
-						style={{
-							transformStyle: "preserve-3d",
-							backfaceVisibility: "hidden",
-						}}>
-						<motion.div
-							animate={{ rotateX: flip ? 180 : 0 }}
-							transition={{ duration: 0.5 }}
-							style={{
-								transformStyle: "preserve-3d",
-								backfaceVisibility: "hidden",
-							}}>
-							{showQR ? (
-								// <QRScanner data={data} setData={setData} />
-								<NewQRScanner
-									onDataFound={(value) => message.info(value)}
-								/>
-							) : visitor ? (
-								<VisitorDetails visitor={visitor} />
-							) : null}
-							{loading ? (
-								<Spin size="large" tip="Loading..." />
-							) : error ? (
-								<p>{error}</p>
-							) : (
-								<div>
-									<Button onClick={toggleView}>
-										Switch View
-									</Button>
-								</div>
-							)}
-						</motion.div>
-					</Card>
-				</Col>
-			</Row>
-		</ConfigProvider>
+		<Row gutter={[16, 16]} justify="center" align="middle">
+			<Col xs={24} sm={12} md={12} lg={12}>
+				<div className="flex w-full flex-col items-end h-full justify-center p-2">
+					{!showQR ? (
+						<QrcodeOutlined onClick={toggleView} />
+					) : (
+						<CloseCircleOutlined
+							style={{ color: "red" }}
+							onClick={toggleView}
+						/>
+					)}
+				</div>
+				{showQR ? (
+					<QRScanner />
+				) : visitor ? (
+					<VisitorDetails visitor={visitor} />
+				) : null}
+				{loading ? (
+					<Spin size="large" tip="Loading..." />
+				) : error ? (
+					<p>{error}</p>
+				) : null}
+			</Col>
+		</Row>
 	);
 };
 

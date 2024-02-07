@@ -2,6 +2,8 @@
 import React, { useState, useRef } from "react";
 import { Form, Input, Button, message } from "antd";
 import Ticket from "./ticket";
+import NodeThermalPrinterTicket from "./nodeThermalPrinter";
+import ReactThermalPrinterTicket from "./reactThermalPrinter";
 
 const VisitorForm: React.FC = () => {
 	const [form] = Form.useForm();
@@ -9,8 +11,6 @@ const VisitorForm: React.FC = () => {
 
 	const handleSubmit = async (values: any) => {
 		try {
-			console.log("Form values:", values);
-
 			const ticketData: VisitorTicket = {
 				name: values.name,
 				phone: values.phone,
@@ -35,7 +35,6 @@ const VisitorForm: React.FC = () => {
 			message.success(data?.message);
 
 			setTicketInfo(data.visitor);
-
 		} catch (error) {
 			console.error("Error during API request:", error);
 		}
@@ -104,9 +103,17 @@ const VisitorForm: React.FC = () => {
 			</Form>
 
 			{ticketInfo && (
-				<div hidden>
-					<Ticket ticketInfo={ticketInfo} />
-				</div>
+				<>
+					<div hidden>
+						{/* <Ticket ticketInfo={ticketInfo} /> */}
+					</div>
+					<div >
+						{/* <NodeThermalPrinterTicket ticketInfo={ticketInfo} /> */}
+					</div>
+					<div >
+						<ReactThermalPrinterTicket ticketInfo={ticketInfo} />
+					</div>
+				</>
 			)}
 		</div>
 	);
