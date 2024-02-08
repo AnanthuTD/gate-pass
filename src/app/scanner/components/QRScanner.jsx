@@ -4,13 +4,10 @@ import { QrScanner } from '@yudiel/react-qr-scanner';
 import { Select } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCameraRotate } from '@fortawesome/free-solid-svg-icons';
-import {
-    SwapOutlined
-} from '@ant-design/icons';
 
 const { Option } = Select;
 
-const App = () => {
+const QRScanner = ({ setTicketId }) => {
     const [cameras, setCameras] = useState([]);
     const [selectedCamera, setSelectedCamera] = useState(null);
     const [showSelect, setShowSelect] = useState(false);
@@ -60,37 +57,45 @@ const App = () => {
     };
 
     return (
-        <div className="flex items-center justify-center">
-            <QrScanner
-                constraints={selectedCamera ? { deviceId: { exact: selectedCamera } } : { facingMode: 'environment' }}
-            onDecode={(result) => console.log(result)}
-            onError={(error) => console.log(error?.message)}
-            className="border-2 border-gray-300 rounded-lg mr-4"
-            style={{ maxWidth: '400px', transform: flipVideo ? 'scaleX(-1)' : 'none' }} // Apply flip only if flipVideo is true
-            videoStyle={{ transform: flipVideo ? 'scaleX(-1)' : 'none' }} // Apply flip only if flipVideo is true
-            />
-            <div className="flex flex-col">
-                {showSelect && (
-                    <Select
-                        value={selectedCamera}
-                        onChange={handleCameraChange}
-                        className="mb-4"
-                        style={{ minWidth: '200px' }}
-                    >
-                        {cameras.map((camera) => (
-                            <Option key={camera.deviceId} value={camera.deviceId}>
-                                {camera.label || `Camera ${cameras.indexOf(camera) + 1}`}
-                            </Option>
-                        ))}
-                    </Select>
-                )}
-                {cameras.length > 1 && (
-                    <FontAwesomeIcon icon={faCameraRotate} onClick={handleSwitchCamera} className="cursor-pointer" />
-                )}
-                <SwapOutlined />
+        <>
+            <div className="flex items-center justify-center w-full">
+                <QrScanner
+                    constraints={selectedCamera ? { deviceId: { exact: selectedCamera } } : { facingMode: 'environment' }}
+                    onDecode={(content) => {
+                        // Check if the content is a valid number string
+                        const parsedNumber = parseFloat(content);
+                        if (!isNaN(parsedNumber) && isFinite(parsedNumber)) {
+                            setTicketId(parsedNumber); // If it's a valid number string, set it as the ticketId
+                        } else {
+                            console.log('Decoded content is not a valid number string:', content);
+                        }
+                    }}
+                    onError={(error) => console.log(error?.message)}
+                    className="border-2 border-gray-300 rounded-lg mr-4"
+                />
+                <div className="flex flex-col m-1">
+                    {cameras.length > 1 && (
+                        <FontAwesomeIcon size='lg' icon={faCameraRotate} onClick={handleSwitchCamera} className="cursor-pointer" />
+                    )}
+                    {/* <SwapOutlined /> */}
+                </div>
             </div>
-        </div>
+            {showSelect && (
+                <Select
+                    value={selectedCamera}
+                    onChange={handleCameraChange}
+                    className="mb-4"
+                    style={{ minWidth: '200px' }}
+                >
+                    {cameras.map((camera) => (
+                        <Option key={camera.deviceId} value={camera.deviceId}>
+                            {camera.label || `Camera ${cameras.indexOf(camera) + 1}`}
+                        </Option>
+                    ))}
+                </Select>
+            )}
+        </>
     );
 };
 
-export default App;
+export default QRScanner;

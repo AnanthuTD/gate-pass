@@ -1,16 +1,17 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { Form, Input, Button, message } from "antd";
-import Ticket from "./ticket";
-import NodeThermalPrinterTicket from "./nodeThermalPrinter";
 import ReactThermalPrinterTicket from "./reactThermalPrinter";
+import Ticket from "./ticket";
 
 const VisitorForm: React.FC = () => {
 	const [form] = Form.useForm();
 	const [ticketInfo, setTicketInfo] = useState<VisitorTicket | null>(null);
+	const [loading, setLoading] = useState(false);
 
 	const handleSubmit = async (values: any) => {
 		try {
+			setLoading(true);
 			const ticketData: VisitorTicket = {
 				name: values.name,
 				phone: values.phone,
@@ -37,6 +38,8 @@ const VisitorForm: React.FC = () => {
 			setTicketInfo(data.visitor);
 		} catch (error) {
 			console.error("Error during API request:", error);
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -96,7 +99,7 @@ const VisitorForm: React.FC = () => {
 				</Form.Item>
 
 				<Form.Item>
-					<Button type="primary" htmlType="submit">
+					<Button type="primary" htmlType="submit" loading={loading}>
 						Submit
 					</Button>
 				</Form.Item>
@@ -104,13 +107,8 @@ const VisitorForm: React.FC = () => {
 
 			{ticketInfo && (
 				<>
-					<div hidden>
-						{/* <Ticket ticketInfo={ticketInfo} /> */}
-					</div>
-					<div >
-						{/* <NodeThermalPrinterTicket ticketInfo={ticketInfo} /> */}
-					</div>
-					<div >
+					<div hidden><Ticket ticketInfo={ticketInfo} /></div>
+					<div>
 						<ReactThermalPrinterTicket ticketInfo={ticketInfo} />
 					</div>
 				</>

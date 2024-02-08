@@ -26,46 +26,45 @@ const ReactThermalPrinterTicket = ({
 
 	const generatePreview = async () => {
 		const preview = (
-				<Printer type="epson" width={42}>
-					<Text size={{ width: 2, height: 2 }}>Visitor Ticket</Text>
-					<Br />
-					<Line />
-					<Row left="Name" right={ticketInfo.name} />
-					<Row
-						left="Arrival Time"
-						right={dayjs
-							.tz(ticketInfo.arrivalTime)
-							.format("YYYY-MM-DD HH:mm:ss")}
+			<Printer type="epson" width={42}>
+				<Text size={{ width: 2, height: 2 }} align="center" bold={true}>MES Collage Marampally</Text>
+				<Line />
+				<Row left="Name" right={ticketInfo.name} />
+				<Row
+					left="Arrival Time"
+					right={dayjs
+						.tz(ticketInfo.arrivalTime)
+						.format("YYYY-MM-DD HH:mm:ss")}
+				/>
+				<Row left="Mobile Number" right={String(ticketInfo.phone)} />
+				<Row
+					left="Purpose of Visit"
+					right={ticketInfo.purposeOfVisit || ""}
+				/>
+				<Row
+					left="Vehicle Number"
+					right={ticketInfo.vehicleNumber || ""}
+				/>
+				<Row
+					left="Visiting Department"
+					right={ticketInfo.visitedDepartment || ""}
+				/>
+				<Row left="Remarks" right={ticketInfo.remarks || ""} />
+				<Line />
+				<Br />
+				<Text align="center">
+					<QRCodeSVG
+						className="outline-8 outline-white outline m-2"
+						value={String(ticketInfo?.id)}
 					/>
-					<Row
-						left="Mobile Number"
-						right={String(ticketInfo.phone)}
-					/>
-					<Row
-						left="Purpose of Visit"
-						right={ticketInfo.purposeOfVisit || ""}
-					/>
-					<Row
-						left="Vehicle Number"
-						right={ticketInfo.vehicleNumber || ""}
-					/>
-					<Row
-						left="Visiting Department"
-						right={ticketInfo.visitedDepartment || ""}
-					/>
-					<Row left="Remarks" right={ticketInfo.remarks || ""} />
-					<Line />
-					<Br />
-					<Text align="center">
-						<QRCodeSVG value={String(ticketInfo?.id)} />
-					</Text>
-					<Cut />
-				</Printer>
+				</Text>
+				<Cut />
+			</Printer>
 		);
 		setTicketPreview(preview);
 		try {
 			const ticketData: Uint8Array = await render(preview);
-            setTicketUint8Array(ticketData);
+			setTicketUint8Array(ticketData);
 		} catch (error) {
 			console.error(error);
 		}
@@ -87,7 +86,7 @@ const ReactThermalPrinterTicket = ({
 	return (
 		<div>
 			{/* Ticket preview */}
-			{ticketPreview}
+			<div className="">{ticketPreview}</div>
 
 			{/* Print button */}
 			<button onClick={printTicket}>Print Ticket</button>
