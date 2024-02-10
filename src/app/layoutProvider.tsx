@@ -8,6 +8,7 @@ import {
 	BulbOutlined,
 	SettingOutlined,
 	QrcodeOutlined,
+	OrderedListOutlined,
 } from "@ant-design/icons";
 import { ConfigProvider, theme } from "antd";
 import Image from "next/image";
@@ -44,9 +45,9 @@ const App: React.FC<AppProps> = ({ children }: AppProps) => {
 			<Image
 				src="/MES_logo.jpg"
 				alt="Logo"
-				className="rounded-md"
-				width={50} // Default width
-				height={50} // Default height
+				className="mt-2 rounded-md"
+				width={40} // Default width
+				height={40} // Default height
 			/>
 			<Link href={"/"}>
 				<Title level={3} style={{ marginLeft: 10, marginBottom: 0 }}>
@@ -62,7 +63,7 @@ const App: React.FC<AppProps> = ({ children }: AppProps) => {
 			<Image
 				src="/MES_logo.jpg"
 				alt="Logo"
-				className="rounded-md"
+				className="mt-2 rounded-md"
 				width={35}
 				height={35}
 			/>
@@ -80,6 +81,15 @@ const App: React.FC<AppProps> = ({ children }: AppProps) => {
 			label: "Toggle Theme",
 			onClick: toggleTheme,
 			icon: <BulbOutlined />,
+		},
+		{
+			key: 4,
+			label: (
+				<Link href={"details/"} prefetch={true}>
+					Details
+				</Link>
+			),
+			icon: <OrderedListOutlined />,
 		},
 		{
 			key: 2,
@@ -105,14 +115,14 @@ const App: React.FC<AppProps> = ({ children }: AppProps) => {
 					<Header
 						className="header"
 						style={{
-							background: "#fff", // Replace with actual color or variable
+							background: "#fff",
 							display: "flex",
 							alignItems: "center",
 							justifyContent: "space-between",
 							backgroundColor: "transparent",
 							paddingInline: "0.5rem",
 						}}>
-						{screen.xs || screen.sm || screen.md ? logo_md : logo}
+						{screen.xl || screen.xxl || screen.lg ? logo : logo_md}
 						<div className="flex items-center justify-center">
 							{ScannerPathname !== pathname ? (
 								<Link
@@ -125,17 +135,17 @@ const App: React.FC<AppProps> = ({ children }: AppProps) => {
 								</Link>
 							) : null}
 							<Dropdown trigger={["click"]} menu={{ items }}>
-								{screen.xs || screen.sm || screen.md ? (
-									<Avatar
-										size="default"
-										icon={<SettingOutlined />}
-									/>
-								) : (
+								{screen.xl || screen.xxl || screen.lg ? (
 									<Button
 										icon={<SettingOutlined />}
 										style={{ marginRight: 10 }}>
 										Settings
 									</Button>
+								) : (
+									<Avatar
+										size="default"
+										icon={<SettingOutlined />}
+									/>
 								)}
 							</Dropdown>
 						</div>

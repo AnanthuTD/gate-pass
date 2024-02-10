@@ -23,6 +23,7 @@
     "prisma": "^5.9.1",
     "react": "^18",
     "react-dom": "^18",
+    "react-infinite-scroll-component": "^6.1.0",
     "react-thermal-printer": "^0.18.1",
     "react-to-print": "^2.14.15"
   },

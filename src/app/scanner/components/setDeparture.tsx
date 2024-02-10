@@ -1,6 +1,12 @@
 import { Button, message } from "antd";
 
-function setDeparture({ visitorId }: { visitorId: number | undefined }) {
+function SetDeparture({
+	visitorId,
+	onSuccess,
+}: {
+	visitorId: number | undefined;
+	onSuccess: (visitorId: number | undefined) => {};
+}) {
 	const setDepartureTime = async () => {
 		try {
 			const response = await fetch(`scanner/api/?id=${visitorId}`, {
@@ -16,6 +22,7 @@ function setDeparture({ visitorId }: { visitorId: number | undefined }) {
 				message.error("Failed");
 				console.error("Error setting departure time:", response.status);
 			}
+			onSuccess(visitorId);
 		} catch (error) {
 			console.error("Error setting departure time:", error);
 		}
@@ -23,9 +30,9 @@ function setDeparture({ visitorId }: { visitorId: number | undefined }) {
 
 	return (
 		<Button onClick={() => setDepartureTime()} disabled={!visitorId}>
-			Mark Departure Now
+			Mark Departure
 		</Button>
 	);
 }
 
-export default setDeparture;
+export default SetDeparture;

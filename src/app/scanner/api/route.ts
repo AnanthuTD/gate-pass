@@ -11,7 +11,6 @@ export async function GET(request: NextRequest) {
 			where: { id: Number(id) },
 		});
 		if (visitor) {
-			console.log(visitor);
 
 			const visitorWithConvertedPhone = {
 				...visitor,
@@ -40,7 +39,6 @@ export async function PATCH(request: NextRequest) {
 	const id = searchParams.get("id");
 
 	try {
-		console.log(new Date().toISOString());
 		
 		const updatedVisitor = await prisma.visitors.update({
 			where: { id: Number(id) },

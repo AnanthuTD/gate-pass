@@ -39,7 +39,6 @@ const Home: React.FC = () => {
 				fetch(`/scanner/api/?id=${numData}`)
 					.then((res) => res.json())
 					.then((fetchedVisitor) => {
-						console.log(fetchedVisitor);
 						setVisitor(fetchedVisitor);
 					})
 					.catch((err) => {

@@ -13,8 +13,6 @@ interface TicketProps {
 
 const Ticket: React.FC<TicketProps> = ({ ticketInfo }) => {
 	const reactToPrintContent = React.useCallback(() => {
-		console.log(componentRef.current);
-
 		return componentRef.current;
 	}, []);
 
