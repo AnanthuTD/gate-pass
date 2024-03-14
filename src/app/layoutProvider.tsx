@@ -68,7 +68,7 @@ const App: React.FC<AppProps> = ({ children }: AppProps) => {
 				height={35}
 			/>
 			<Link href={"/"} prefetch>
-				<Title level={3} style={{ marginLeft: 10, marginBottom: 0 }}>
+				<Title level={4} style={{ marginLeft: 10, marginBottom: 0 }}>
 					MES
 				</Title>
 			</Link>
@@ -109,7 +109,8 @@ const App: React.FC<AppProps> = ({ children }: AppProps) => {
 			theme={{
 				algorithm:
 					currentTheme === "dark" ? darkAlgorithm : defaultAlgorithm,
-			}}>
+			}}
+		>
 			<Layout className="h-screen">
 				<Layout>
 					<Header
@@ -121,31 +122,32 @@ const App: React.FC<AppProps> = ({ children }: AppProps) => {
 							justifyContent: "space-between",
 							backgroundColor: "transparent",
 							paddingInline: "0.5rem",
-						}}>
+						}}
+					>
 						{screen.xl || screen.xxl || screen.lg ? logo : logo_md}
+						<Title level={4} style={{ marginLeft: 10, marginBottom: 0 }}>
+							Gate Pass
+						</Title>
 						<div className="flex items-center justify-center">
 							{ScannerPathname !== pathname ? (
 								<Link
 									href="/scanner"
 									className="inline-block mx-5"
-									style={{ lineHeight: 0 }}>
-									<QrcodeOutlined
-										style={{ fontSize: "1.5rem" }}
-									/>
+									style={{ lineHeight: 0 }}
+								>
+									<QrcodeOutlined style={{ fontSize: "1.5rem" }} />
 								</Link>
 							) : null}
 							<Dropdown trigger={["click"]} menu={{ items }}>
 								{screen.xl || screen.xxl || screen.lg ? (
 									<Button
 										icon={<SettingOutlined />}
-										style={{ marginRight: 10 }}>
+										style={{ marginRight: 10 }}
+									>
 										Settings
 									</Button>
 								) : (
-									<Avatar
-										size="default"
-										icon={<SettingOutlined />}
-									/>
+									<Avatar size="default" icon={<SettingOutlined />} />
 								)}
 							</Dropdown>
 						</div>
@@ -161,7 +163,8 @@ const App: React.FC<AppProps> = ({ children }: AppProps) => {
 							backgroundColor: "transparent",
 						}}
 						className="flex-grow"
-						id="scrollableDiv">
+						id="scrollableDiv"
+					>
 						{layoutRendered && children}
 					</Content>
 				</Layout>
