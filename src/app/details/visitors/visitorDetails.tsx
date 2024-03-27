@@ -207,7 +207,7 @@ const VisitorTable: React.FC<Props> = () => {
 					</Divider>
 				}
 				endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
-				scrollableTarget="scrollableDiv" // Provide the ID of the scrollable element
+				scrollableTarget="scrollableDiv" 
 			>
 				<Table
 					columns={columns}

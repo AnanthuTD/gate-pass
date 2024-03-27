@@ -1,6 +1,13 @@
-"use client";
 import React, { useEffect, useRef } from "react";
-import { Card, Typography, Divider, ConfigProvider, theme } from "antd";
+import {
+	Card,
+	Typography,
+	Divider,
+	ConfigProvider,
+	theme,
+	Row,
+	Col,
+} from "antd";
 import { QRCodeSVG } from "qrcode.react";
 import dayjs from "@/lib/dayjs";
 import { useReactToPrint } from "react-to-print";
@@ -30,52 +37,85 @@ const Ticket: React.FC<TicketProps> = ({ ticketInfo }) => {
 	}, [handlePrint]);
 
 	return (
-		<ConfigProvider theme={{ algorithm: theme.defaultAlgorithm }}>
-			<Card
+		<ConfigProvider
+			theme={{
+				algorithm: theme.defaultAlgorithm,
+				components: {
+					Divider: {
+						textPaddingInline: "0",
+					},
+				},
+				token: {
+					marginLG: 15,
+				},
+			}}
+		>
+			<div
 				ref={componentRef}
-				className="w-full max-w-md mx-auto bg-white shadow-md rounded-md"
-				title={<Title level={2}>Ticket Information</Title>}>
-				<Text>
-					<span className="font-bold">Name:</span> {ticketInfo.name}
-				</Text>
-				<Divider />
-				<Text>
-					<span className="font-bold">Arrival Time:</span>{" "}
-					{dayjs
-						.tz(ticketInfo.arrivalTime)
-						.format("YYYY-MM-DD HH:mm:ss")}
-				</Text>
-				<Divider />
-				<Text>
-					<span className="font-bold">Mobile Number:</span>{" "}
-					{String(ticketInfo.phone)}
-				</Text>
-				<Divider />
-				<Text>
-					<span className="font-bold">Purpose of Visit:</span>{" "}
-					{ticketInfo.purposeOfVisit}
-				</Text>
-				<Divider />
-				<Text>
-					<span className="font-bold">Vehicle Number:</span>{" "}
-					{ticketInfo.vehicleNumber}
-				</Text>
-				<Divider />
-				<Text>
-					<span className="font-bold">Visiting Department:</span>{" "}
-					{ticketInfo.visitedDepartment}
-				</Text>
-				<Divider />
-				<Text>
-					<span className="font-bold">Remarks:</span>{" "}
-					{ticketInfo.remarks}
-				</Text>
-				<Divider />
-				<Title level={3} className="mb-2">
-					QR Code
+				className="w-full bg-white shadow-md rounded-md flex flex-col "
+				style={{ height: "50vh" }}
+			>
+				<Title
+					level={2}
+					className="text-center"
+					style={{ marginBottom: "0" }}
+				>
+					GATE PASS
 				</Title>
-				<QRCodeSVG value={String(ticketInfo?.id)} />
-			</Card>
+				<Title level={3} className="text-center" style={{ marginTop: "0" }}>
+					MES College Marampally
+				</Title>
+				<div className="w-full flex">
+					<div className="w-full w-3/4">
+						<Text>
+							<span className="font-bold">Name:</span> {ticketInfo.name}
+						</Text>
+						<Divider />
+						<Text>
+							<span className="font-bold">Arrival Time:</span>{" "}
+							{dayjs
+								.tz(ticketInfo.arrivalTime)
+								.format("YYYY-MM-DD HH:mm:ss")}
+						</Text>
+						<Divider />
+						<Text>
+							<span className="font-bold">Mobile Number:</span>{" "}
+							{String(ticketInfo.phone)}
+						</Text>
+						<Divider />
+						{/* <div className="m-1"></div> */}
+						<Text>
+							<span className="font-bold">Purpose of Visit:</span>{" "}
+							{ticketInfo.purposeOfVisit}
+						</Text>
+						<Divider />
+						<Text>
+							<span className="font-bold">Vehicle Number:</span>{" "}
+							{ticketInfo.vehicleNumber}
+						</Text>
+						<Divider />
+						<Text>
+							<span className="font-bold">Visiting Department:</span>{" "}
+							{ticketInfo.visitedDepartment}
+						</Text>
+						<Divider />
+						<Text>
+							<span className="font-bold">Remarks:</span>{" "}
+							{ticketInfo.remarks}
+						</Text>
+					</div>
+					<div>
+						<div className="flex justify-end items-end">
+							<div>
+								<Title level={3} className="mb-2">
+									QR Code
+								</Title>
+								<QRCodeSVG value={String(ticketInfo?.id)} />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</ConfigProvider>
 	);
 };

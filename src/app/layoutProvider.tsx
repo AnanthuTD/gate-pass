@@ -156,11 +156,14 @@ const App: React.FC<AppProps> = ({ children }: AppProps) => {
 						style={{
 							margin: "24px 16px",
 							minHeight: 280,
-							background: "#f0f2f5", // Replace with actual color or variable
 							overflow: "auto",
 							padding: "0 16px",
 							border: "1px solid rgba(140, 140, 140, 0.35)",
 							backgroundColor: "transparent",
+							backgroundImage: "url('/college.jpg')",
+							backgroundSize: "cover",
+							backgroundRepeat: "no-repeat",
+							backgroundPosition: "center",
 						}}
 						className="flex-grow"
 						id="scrollableDiv"
