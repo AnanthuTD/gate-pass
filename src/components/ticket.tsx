@@ -52,7 +52,7 @@ const Ticket: React.FC<TicketProps> = ({ ticketInfo }) => {
 		>
 			<div
 				ref={componentRef}
-				className="w-full bg-white shadow-md rounded-md flex flex-col "
+				className="w-full bg-white flex flex-col mx-5"
 				style={{ height: "50vh" }}
 			>
 				<Title
@@ -60,10 +60,10 @@ const Ticket: React.FC<TicketProps> = ({ ticketInfo }) => {
 					className="text-center"
 					style={{ marginBottom: "0" }}
 				>
-					GATE PASS
+					MES College Marampally
 				</Title>
 				<Title level={3} className="text-center" style={{ marginTop: "0" }}>
-					MES College Marampally
+					GATE PASS
 				</Title>
 				<div className="w-full flex">
 					<div className="w-full w-3/4">

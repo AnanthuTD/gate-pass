@@ -1,4 +1,4 @@
-import VisitorForm from "./components/visitorForm";
+import VisitorForm from "../components/visitorForm";
 
 const Home = () => {
 	return (

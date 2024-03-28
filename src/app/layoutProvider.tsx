@@ -16,6 +16,7 @@ import Title from "antd/es/typography/Title";
 import type { MenuProps } from "antd";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { SessionProvider } from "next-auth/react";
 
 const { Header, Content } = Layout;
 const { darkAlgorithm, defaultAlgorithm } = theme;
@@ -25,7 +26,9 @@ interface AppProps {
 	children: React.ReactNode;
 }
 
-const App: React.FC<AppProps> = ({ children }: AppProps) => {
+const App: React.FC<AppProps> = ({
+	children,
+}: AppProps) => {
 	const [layoutRendered, setLayoutRendered] = useState<boolean>(false);
 	const [currentTheme, setCurrentTheme] = useState<string>("dark");
 	const screen = useBreakpoint();
@@ -105,74 +108,82 @@ const App: React.FC<AppProps> = ({ children }: AppProps) => {
 	const ScannerPathname = "/scanner";
 
 	return (
-		<ConfigProvider
-			theme={{
-				algorithm:
-					currentTheme === "dark" ? darkAlgorithm : defaultAlgorithm,
-			}}
-		>
-			<Layout className="h-screen">
-				<Layout>
-					<Header
-						className="header"
-						style={{
-							background: "#fff",
-							display: "flex",
-							alignItems: "center",
-							justifyContent: "space-between",
-							backgroundColor: "transparent",
-							paddingInline: "0.5rem",
-						}}
-					>
-						{screen.xl || screen.xxl || screen.lg ? logo : logo_md}
-						<Title level={4} style={{ marginLeft: 10, marginBottom: 0 }}>
-							Gate Pass
-						</Title>
-						<div className="flex items-center justify-center">
-							{ScannerPathname !== pathname ? (
-								<Link
-									href="/scanner"
-									className="inline-block mx-5"
-									style={{ lineHeight: 0 }}
-								>
-									<QrcodeOutlined style={{ fontSize: "1.5rem" }} />
-								</Link>
-							) : null}
-							<Dropdown trigger={["click"]} menu={{ items }}>
-								{screen.xl || screen.xxl || screen.lg ? (
-									<Button
-										icon={<SettingOutlined />}
-										style={{ marginRight: 10 }}
+		<SessionProvider>
+			<ConfigProvider
+				theme={{
+					algorithm:
+						currentTheme === "dark" ? darkAlgorithm : defaultAlgorithm,
+				}}
+			>
+				<Layout className="h-screen">
+					<Layout>
+						<Header
+							className="header"
+							style={{
+								background: "#fff",
+								display: "flex",
+								alignItems: "center",
+								justifyContent: "space-between",
+								backgroundColor: "transparent",
+								paddingInline: "0.5rem",
+							}}
+						>
+							{screen.xl || screen.xxl || screen.lg ? logo : logo_md}
+							<Title
+								level={4}
+								style={{ marginLeft: 10, marginBottom: 0 }}
+							>
+								Gate Pass
+							</Title>
+							<div className="flex items-center justify-center">
+								{ScannerPathname !== pathname ? (
+									<Link
+										href="/scanner"
+										className="inline-block mx-5"
+										style={{ lineHeight: 0 }}
 									>
-										Settings
-									</Button>
-								) : (
-									<Avatar size="default" icon={<SettingOutlined />} />
-								)}
-							</Dropdown>
-						</div>
-					</Header>
-					<Content
-						style={{
-							margin: "24px 16px",
-							minHeight: 280,
-							overflow: "auto",
-							padding: "0 16px",
-							border: "1px solid rgba(140, 140, 140, 0.35)",
-							backgroundColor: "transparent",
-							backgroundImage: "url('/college.jpg')",
-							backgroundSize: "cover",
-							backgroundRepeat: "no-repeat",
-							backgroundPosition: "center",
-						}}
-						className="flex-grow"
-						id="scrollableDiv"
-					>
-						{layoutRendered && children}
-					</Content>
+										<QrcodeOutlined style={{ fontSize: "1.5rem" }} />
+									</Link>
+								) : null}
+								<Dropdown trigger={["click"]} menu={{ items }}>
+									{screen.xl || screen.xxl || screen.lg ? (
+										<Button
+											icon={<SettingOutlined />}
+											style={{ marginRight: 10 }}
+										>
+											Settings
+										</Button>
+									) : (
+										<Avatar
+											size="default"
+											icon={<SettingOutlined />}
+										/>
+									)}
+								</Dropdown>
+							</div>
+						</Header>
+						<Content
+							style={{
+								margin: "24px 16px",
+								minHeight: 280,
+								overflow: "auto",
+								padding: "0 16px",
+								border: "1px solid rgba(140, 140, 140, 0.35)",
+								backgroundColor: "transparent",
+								backgroundImage: "url('/college.jpg')",
+								backgroundSize: "cover",
+								backgroundRepeat: "no-repeat",
+								backgroundPosition: "center",
+							}}
+							className="flex-grow"
+							id="scrollableDiv"
+						>
+							{layoutRendered && children}
+						</Content>
+					</Layout>
 				</Layout>
-			</Layout>
-		</ConfigProvider>
+			</ConfigProvider>
+		</SessionProvider>
 	);
 };
 

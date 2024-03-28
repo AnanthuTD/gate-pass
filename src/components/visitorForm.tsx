@@ -107,7 +107,7 @@ const VisitorForm: React.FC = () => {
 
 			{ticketInfo && (
 				<>
-					<div hidden><Ticket ticketInfo={ticketInfo} /></div>
+					<div ><Ticket ticketInfo={ticketInfo} /></div>
 					<div>
 						<ReactThermalPrinterTicket ticketInfo={ticketInfo} />
 					</div>

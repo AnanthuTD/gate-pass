@@ -23,3 +23,9 @@ model Visitors {
     visitedDepartment String?
     remarks           String?
 }
+
+model AuthUsers {
+    name     String
+    password String
+    email    String @unique @id
+}

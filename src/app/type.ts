@@ -10,3 +10,8 @@ type VisitorTicket = {
 	visitedDepartment?: string | null;
 	remarks?: string | null;
 };
+interface User {
+	email: string;
+	password: string;
+	name: string;
+}
