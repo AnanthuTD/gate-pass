@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Form, Input, Button, message } from "antd";
 import ReactThermalPrinterTicket from "./reactThermalPrinter";
 import Ticket from "./ticket";
+import Title from "antd/es/typography/Title";
 
 const VisitorForm: React.FC = () => {
 	const [form] = Form.useForm();
@@ -45,18 +46,22 @@ const VisitorForm: React.FC = () => {
 
 	return (
 		<div>
-			<Form form={form} layout="vertical" onFinish={handleSubmit}>
+			<Form
+				form={form}
+				layout="vertical"
+				onFinish={handleSubmit}
+				size="large"
+			>
 				<Form.Item
-					label="Name"
+					label={<Title level={5}>Name</Title>}
 					name="name"
-					rules={[
-						{ required: true, message: "Please enter your name" },
-					]}>
+					rules={[{ required: true, message: "Please enter your name" }]}
+				>
 					<Input />
 				</Form.Item>
 
 				<Form.Item
-					label="Mobile Number"
+					label={<Title level={5}>Mobile Number</Title>}
 					name="phone"
 					rules={[
 						{
@@ -65,36 +70,35 @@ const VisitorForm: React.FC = () => {
 						},
 						{
 							pattern: /^[0-9]{10}$/,
-							message:
-								"Please enter a valid 10-digit mobile number",
+							message: "Please enter a valid 10-digit mobile number",
 						},
-					]}>
+					]}
+				>
 					<Input />
 				</Form.Item>
 
 				<Form.Item
-					label="Purpose of Visit"
+					label={<Title level={5}>Purpose of Visit</Title>}
 					name="purposeOfVisit"
 					rules={[
 						{
 							required: true,
 							message: "Please enter the purpose of your visit",
 						},
-					]}>
+					]}
+				>
 					<Input.TextArea />
 				</Form.Item>
 
-				<Form.Item label="Vehicle Number" name="vehicleNumber">
+				<Form.Item label={<Title level={5}>Vehicle Number</Title>} name="vehicleNumber">
 					<Input />
 				</Form.Item>
 
-				<Form.Item
-					label="Visiting Department"
-					name="visitingDepartment">
+				<Form.Item label={<Title level={5}>Visiting Department</Title>} name="visitingDepartment">
 					<Input />
 				</Form.Item>
 
-				<Form.Item label="Remarks" name="remarks">
+				<Form.Item label={<Title level={5}>Remarks</Title>} name="remarks">
 					<Input.TextArea />
 				</Form.Item>
 
@@ -107,7 +111,9 @@ const VisitorForm: React.FC = () => {
 
 			{ticketInfo && (
 				<>
-					<div ><Ticket ticketInfo={ticketInfo} /></div>
+					<div>
+						<Ticket ticketInfo={ticketInfo} />
+					</div>
 					<div>
 						<ReactThermalPrinterTicket ticketInfo={ticketInfo} />
 					</div>
