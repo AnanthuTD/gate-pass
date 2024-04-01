@@ -25,9 +25,13 @@ export async function POST(req: Request) {
 			},
 		});
 
+		console.log('====================================');
+		console.log('New user added');
+		console.log('====================================');
+
 		return NextResponse.json(
 			{ message: "User created successfully", user: newUser },
-			{ status: 201 }
+			{ status: 201, statusText:'ok' }
 		);
 	} catch (error) {
 		console.error("Error creating user:", error);

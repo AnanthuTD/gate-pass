@@ -9,6 +9,7 @@ import {
 	SettingOutlined,
 	QrcodeOutlined,
 	OrderedListOutlined,
+	UserAddOutlined,
 } from "@ant-design/icons";
 import { ConfigProvider, theme } from "antd";
 import Image from "next/image";
@@ -84,7 +85,7 @@ const App: React.FC<AppProps> = ({ children }: AppProps) => {
 			icon: <BulbOutlined />,
 		},
 		{
-			key: 4,
+			key: 3,
 			label: (
 				<Link href={"details/"} prefetch={true}>
 					Details
@@ -93,12 +94,25 @@ const App: React.FC<AppProps> = ({ children }: AppProps) => {
 			icon: <OrderedListOutlined />,
 		},
 		{
-			key: 2,
-			label: "Profile",
+			key: 4,
+			label: (
+				<Link href={"/auth/signup"} prefetch={true}>
+					Add User
+				</Link>
+			),
+			icon: <UserAddOutlined />,
+		},
+		{
+			key: 6,
+			label: (
+				<Link href={"/users"} prefetch={true}>
+					List Users
+				</Link>
+			),
 			icon: <UserOutlined />,
 		},
 		{
-			key: 3,
+			key: 5,
 			label: (
 				<Button
 					icon={<LogoutOutlined />}

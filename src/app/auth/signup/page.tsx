@@ -1,16 +1,14 @@
 "use client";
 import { useState } from "react";
 import { Form, Input, Button, message, Card } from "antd";
-import { useRouter } from "next/navigation";
 import Title from "antd/es/typography/Title";
 
 const SignUpPage = () => {
-	const router = useRouter();
 	const [loading, setLoading] = useState(false);
 
 	const signUp = async (userData: User) => {
 		try {
-			const response = await fetch("/signup/api", {
+			const response = await fetch("/auth/signup/api", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -31,13 +29,8 @@ const SignUpPage = () => {
 	const onFinish = async (values: User) => {
 		setLoading(true);
 		try {
-			const response = await signUp(values);
-			if (response.ok) {
-				message.success("Sign up successful! Please log in.");
-				router.push("/login");
-			} else {
-				message.error("Sign up failed. Please try again.");
-			}
+			await signUp(values);
+			message.success("Sign up successful! Please log in.");
 		} catch (error) {
 			console.error("Error signing up:", error);
 			message.error("An error occurred. Please try again.");
