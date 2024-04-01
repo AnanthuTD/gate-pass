@@ -71,7 +71,7 @@ function UserList() {
 			:{},
 	];
 
-	return <Table dataSource={users} columns={columns} />;
+	return <Table className="mt-5" dataSource={users} columns={columns} />;
 }
 
 export default UserList;
