@@ -11,6 +11,7 @@ import {
 import { QRCodeSVG } from "qrcode.react";
 import dayjs from "@/lib/dayjs";
 import { useReactToPrint } from "react-to-print";
+import Image from "next/image";
 
 const { Title, Text } = Typography;
 
@@ -52,21 +53,30 @@ const Ticket: React.FC<TicketProps> = ({ ticketInfo }) => {
 		>
 			<div
 				ref={componentRef}
-				className="w-full bg-white flex flex-col mx-5"
+				className="w-full bg-white flex flex-col mx-5 pt-10"
 				style={{ height: "50vh" }}
 			>
-				<Title
-					level={2}
-					className="text-center"
-					style={{ marginBottom: "0" }}
-				>
-					MES College Marampally
-				</Title>
+				<div className="flex justify-center items-center">
+					<Image
+						src="/MES_logo.jpg"
+						alt="Logo"
+						className="mt-2 rounded-md"
+						width={40} // Default width
+						height={40} // Default height
+					/>
+					<Title
+						level={2}
+						className="text-center"
+						style={{ marginBottom: "0" }}
+					>
+						MES COLLEGE MARAMPALLY
+					</Title>
+				</div>
 				<Title level={3} className="text-center" style={{ marginTop: "0" }}>
 					GATE PASS
 				</Title>
-				<div className="w-full flex">
-					<div className="w-full w-3/4">
+				<Row gutter={[16, 16]}>
+					<Col span={16}>
 						<Text>
 							<span className="font-bold">Name:</span> {ticketInfo.name}
 						</Text>
@@ -83,7 +93,6 @@ const Ticket: React.FC<TicketProps> = ({ ticketInfo }) => {
 							{String(ticketInfo.phone)}
 						</Text>
 						<Divider />
-						{/* <div className="m-1"></div> */}
 						<Text>
 							<span className="font-bold">Purpose of Visit:</span>{" "}
 							{ticketInfo.purposeOfVisit}
@@ -103,18 +112,20 @@ const Ticket: React.FC<TicketProps> = ({ ticketInfo }) => {
 							<span className="font-bold">Remarks:</span>{" "}
 							{ticketInfo.remarks}
 						</Text>
-					</div>
-					<div>
-						<div className="flex justify-end items-end">
-							<div>
-								<Title level={3} className="mb-2">
-									QR Code
-								</Title>
-								<QRCodeSVG value={String(ticketInfo?.id)} />
-							</div>
+					</Col>
+					<Col
+						span={8}
+						className="flex flex-col justify-center items-center"
+					>
+						<Title level={3} className="mb-2">
+							QR Code
+						</Title>
+						<QRCodeSVG value={String(ticketInfo?.id)} size={128} />
+						<div className="mt-5">
+							<Text className="font-bold">Signature: </Text>
 						</div>
-					</div>
-				</div>
+					</Col>
+				</Row>
 			</div>
 		</ConfigProvider>
 	);
