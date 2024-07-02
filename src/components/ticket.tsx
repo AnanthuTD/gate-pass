@@ -78,6 +78,10 @@ const Ticket: React.FC<TicketProps> = ({ ticketInfo }) => {
 				<Row gutter={[16, 16]}>
 					<Col span={16}>
 						<Text>
+							<span className="font-bold">ID:</span> {ticketInfo.id}
+						</Text>
+						<Divider />
+						<Text>
 							<span className="font-bold">Name:</span> {ticketInfo.name}
 						</Text>
 						<Divider />
