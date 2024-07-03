@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
 	Br,
 	Cut,
@@ -11,6 +11,8 @@ import {
 } from "react-thermal-printer";
 import dayjs from "@/lib/dayjs"; // Import dayjs for date formatting
 import { QRCodeSVG } from "qrcode.react";
+import { Button, Radio } from "antd";
+// import { connect } from "node:net";
 
 const ReactThermalPrinterTicket = ({
 	ticketInfo,
@@ -20,15 +22,34 @@ const ReactThermalPrinterTicket = ({
 	const [ticketUint8Array, setTicketUint8Array] = useState<Uint8Array | null>(
 		null
 	);
-	const [ticketPreview, setTicketPreview] = useState<JSX.Element | null>(
-		null
+	const [ticketPreview, setTicketPreview] = useState<JSX.Element | null>(null);
+	const [connectionType, setConnectionType] = useState<"serial" | "network">(
+		"serial"
 	);
+
+	// Retrieve the connection type from local storage when the component mounts
+	useEffect(() => {
+		const savedConnectionType = localStorage.getItem("connectionType");
+		if (savedConnectionType) {
+			setConnectionType(savedConnectionType as "serial" | "network");
+		}
+	}, []);
+
+	// Store the connection type in local storage whenever it changes
+	const handleConnectionTypeChange = (e: any) => {
+		const selectedType = e.target.value;
+		setConnectionType(selectedType);
+		localStorage.setItem("connectionType", selectedType);
+	};
 
 	const generatePreview = async () => {
 		const preview = (
 			<Printer type="epson" width={42}>
-				<Text size={{ width: 2, height: 2 }} align="center" bold={true}>MES Collage Marampally</Text>
+				<Text size={{ width: 2, height: 2 }} align="center" bold={true}>
+					MES Collage Marampally
+				</Text>
 				<Line />
+				<Row left="ID" right={String(ticketInfo.id)} />
 				<Row left="Name" right={ticketInfo.name} />
 				<Row
 					left="Arrival Time"
@@ -41,10 +62,7 @@ const ReactThermalPrinterTicket = ({
 					left="Purpose of Visit"
 					right={ticketInfo.purposeOfVisit || ""}
 				/>
-				<Row
-					left="Vehicle Number"
-					right={ticketInfo.vehicleNumber || ""}
-				/>
+				<Row left="Vehicle Number" right={ticketInfo.vehicleNumber || ""} />
 				<Row
 					left="Visiting Department"
 					right={ticketInfo.visitedDepartment || ""}
@@ -64,18 +82,42 @@ const ReactThermalPrinterTicket = ({
 		setTicketPreview(preview);
 		try {
 			const ticketData: Uint8Array = await render(preview);
-			setTicketUint8Array(ticketData);
+			return ticketData;
+			// setTicketUint8Array(ticketData);
 		} catch (error) {
 			console.error(error);
 		}
+		return null;
 	};
 
 	const printTicket = async () => {
 		try {
-			generatePreview();
-			if (ticketUint8Array) {
-				// Print data using your thermal printer
-				console.log("Printing ticket:", ticketUint8Array);
+			const ticketData = await generatePreview();
+			console.log(ticketData);
+			
+			if (ticketData) {
+				if (connectionType === "serial") {
+					const port = await window.navigator.serial.requestPort();
+					await port.open({ baudRate: 9600 });
+					const writer = port.writable?.getWriter();
+					if (writer != null) {
+						await writer.write(ticketData);
+						writer.releaseLock();
+					}
+				} /* else if (connectionType === "network") {
+					const conn = connect(
+						{
+							host: "192.168.0.99",
+							port: 9100,
+							timeout: 3000,
+						},
+						() => {
+							conn.write(Buffer.from(ticketUint8Array), () => {
+								conn.destroy();
+							});
+						}
+					);
+				} */
 			}
 		} catch (error) {
 			console.error("Error printing ticket:", error);
@@ -88,8 +130,17 @@ const ReactThermalPrinterTicket = ({
 			{/* Ticket preview */}
 			<div className="">{ticketPreview}</div>
 
+			{/* Connection type selection */}
+			<Radio.Group
+				onChange={handleConnectionTypeChange}
+				value={connectionType}
+			>
+				<Radio value="serial">Serial</Radio>
+				<Radio value="network">Network</Radio>
+			</Radio.Group>
+
 			{/* Print button */}
-			<button onClick={printTicket}>Print Ticket</button>
+			<Button onClick={printTicket}>Print Ticket</Button>
 		</div>
 	);
 };
