@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import {
-	Card,
 	Typography,
 	Divider,
 	ConfigProvider,
